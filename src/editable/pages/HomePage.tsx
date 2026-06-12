@@ -7,6 +7,7 @@ import { pagesContent } from '@/editable/content/pages.content'
 import type { SitePost } from '@/lib/site-connector'
 import { EditableHomeCta, EditableHomeHero, EditableMagazineSplit, EditableStoryRail, EditableTimeCollections } from '@/editable/sections/HomeSections'
 import { EditableSiteShell } from '@/editable/shell/EditableSiteShell'
+import { slot4BrandConfig } from '@/editable/theme/brand.config'
 
 export const revalidate = 300
 
@@ -29,7 +30,7 @@ function uniquePosts(posts: SitePost[]) {
 }
 
 export default async function HomePage() {
-  const primaryTask = (SITE_CONFIG.tasks.find((task) => task.enabled)?.key || 'article') as TaskKey
+  const primaryTask = (SITE_CONFIG.tasks.find((task) => task.key === 'sbm' && task.enabled)?.key || SITE_CONFIG.tasks.find((task) => task.enabled)?.key || 'sbm') as TaskKey
   const primaryRoute = SITE_CONFIG.taskViews[primaryTask] || `/${primaryTask}`
   const taskFeed: TaskFeedItem[] = await fetchHomeTaskFeed(12, { fresh: true, timeoutMs: 8000 })
   const primaryPosts = uniquePosts(taskFeed.find(({ task }) => task.key === primaryTask)?.posts || []).slice(0, 24)
@@ -43,7 +44,7 @@ export default async function HomePage() {
         data={{
           '@context': 'https://schema.org',
           '@type': 'WebSite',
-          name: SITE_CONFIG.name,
+          name: slot4BrandConfig.siteName,
           url: baseUrl,
           potentialAction: {
             '@type': 'SearchAction',
