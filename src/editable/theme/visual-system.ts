@@ -68,14 +68,14 @@ export const visualPresets = {
   },
   'tech-directory': {
     label: 'Tech Directory',
-    mood: 'clean, fast, useful',
+    mood: 'clean, fast, useful SBM discovery',
     fontDirection: 'modern sans with crisp mono data accents',
     colors: {
-      background: '#f6f9fc',
-      foreground: '#101827',
-      muted: '#5f6b7a',
-      primary: '#0f172a',
-      accent: '#00a6ff',
+      background: '#f5f7fb',
+      foreground: '#1e2433',
+      muted: '#667085',
+      primary: '#202637',
+      accent: '#4458e6',
       surface: '#ffffff',
     },
     shape: 'clean grids, pill filters, sharp information hierarchy',
@@ -113,18 +113,12 @@ export const visualPresets = {
 export const visualSystem = {
   productKind: slot4BrandConfig.productKind,
   recommendedPreset:
-    slot4BrandConfig.productKind === 'visual'
-      ? 'visual-gallery'
-      : slot4BrandConfig.productKind === 'editorial'
-        ? 'editorial-paper'
-        : slot4BrandConfig.productKind === 'directory'
-          ? 'tech-directory'
-          : 'organic-journal',
+    'tech-directory',
   radius: {
-    sm: '0.75rem',
-    md: '1.25rem',
-    lg: '2rem',
-    xl: '2.75rem',
+    sm: '0.5rem',
+    md: '0.75rem',
+    lg: '1rem',
+    xl: '1.25rem',
   },
   motion: {
     pageLoad: 'animate-in fade-in slide-in-from-bottom-4 duration-700',

@@ -59,7 +59,7 @@ const taskDeck: Record<TaskKey, { icon: typeof FileText; archiveClass: string; p
   listing: { icon: Building2, archiveClass: 'grid gap-5 xl:grid-cols-2', promise: 'Directory cards highlight company identity, location, contacts, and service details.', badge: 'Business' },
   classified: { icon: Megaphone, archiveClass: 'grid gap-5 xl:grid-cols-2', promise: 'Offer-board cards prioritize price, location, condition, and quick action.', badge: 'Offer' },
   image: { icon: Camera, archiveClass: 'columns-1 gap-5 space-y-5 md:columns-2 xl:columns-3', promise: 'Gallery-first browsing with strong visuals and compact captions.', badge: 'Gallery' },
-  sbm: { icon: Bookmark, archiveClass: 'grid gap-4 md:grid-cols-2 xl:grid-cols-3', promise: 'Bookmark cards stay mostly text-based so saved resources scan quickly.', badge: 'Bookmark' },
+  sbm: { icon: Bookmark, archiveClass: 'grid auto-rows-[minmax(120px,auto)] gap-5 md:grid-cols-2 xl:grid-cols-3', promise: 'SBM cards highlight source, category, description, and a direct detail path for fast resource review.', badge: 'Bookmark' },
   pdf: { icon: Download, archiveClass: 'grid gap-5 md:grid-cols-2 xl:grid-cols-3', promise: 'Document cards surface file context, download intent, and summary.', badge: 'PDF' },
   profile: { icon: UserRound, archiveClass: 'grid gap-5 md:grid-cols-2 xl:grid-cols-4', promise: 'Profile cards focus on identity, short bio, and direct discovery.', badge: 'Profile' },
 }
@@ -95,27 +95,30 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
   return (
     <EditableSiteShell>
       <main style={archiveVars} className="bg-[var(--archive-bg)] text-[var(--archive-text)]">
-        <section className="mx-auto grid max-w-[var(--editable-container)] gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-20">
-          <div className="rounded-[2.5rem] border border-[var(--editable-border)] bg-[var(--archive-surface)] p-7 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-10">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--editable-border)] bg-white/70 px-4 py-2 text-xs font-black uppercase tracking-[0.24em] text-[var(--archive-accent)]"><Icon className="h-4 w-4" /> {label}</div>
-            <h1 className="mt-5 max-w-4xl text-5xl font-black leading-[0.95] tracking-[-0.07em] sm:text-6xl">{voice?.headline || `Browse ${label}`}</h1>
-            <p className="mt-6 max-w-2xl text-base leading-8 opacity-70">{voice?.description || SITE_CONFIG.description}</p>
-            <div className="mt-6 rounded-[1.5rem] border border-[var(--editable-border)] bg-white/55 p-4 text-sm font-bold leading-7 opacity-75">{deck.promise}</div>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href={basePath} className="rounded-full bg-[var(--archive-text)] px-5 py-3 text-sm font-black text-[var(--archive-bg)]">Browse all</Link>
-              <Link href="/search" className="rounded-full border border-[var(--editable-border)] px-5 py-3 text-sm font-black">Search posts</Link>
+        <section className="relative overflow-hidden px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+          <div className="absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_88%_0%,rgba(255,174,190,0.30),transparent_34%),radial-gradient(circle_at_7%_78%,rgba(103,205,255,0.22),transparent_32%)]" />
+          <div className="relative mx-auto grid max-w-[var(--editable-container)] gap-8 lg:grid-cols-[1fr_360px] lg:items-end">
+            <div className="text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 rounded-lg border border-[var(--editable-border)] bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-[var(--archive-accent)] shadow-sm"><Icon className="h-4 w-4" /> {label}</div>
+              <h1 className="mx-auto mt-6 max-w-4xl text-4xl font-black leading-[1.05] text-[#202637] sm:text-5xl lg:mx-0 lg:text-6xl">{voice?.headline || `Browse ${label}`}</h1>
+              <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-[#667085] lg:mx-0">{voice?.description || SITE_CONFIG.description}</p>
+              <div className="mt-7 flex flex-wrap justify-center gap-3 lg:justify-start">
+                {['SBM Sites', 'High Authority', 'Niche Resources', 'Submission Ideas', 'Reference Flow'].map((chip) => (
+                  <Link key={chip} href={basePath} className="rounded-lg border border-[var(--editable-border)] bg-white px-4 py-2 text-sm font-black text-[#202637] shadow-sm hover:text-[#4458e6]">{chip}</Link>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <form action={basePath} className="self-end rounded-[2rem] border border-[var(--editable-border)] bg-white/70 p-5 shadow-sm backdrop-blur">
-            <div className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] opacity-55"><Filter className="h-4 w-4" /> Filter</div>
-            <select name="category" defaultValue={category} className="mt-4 h-12 w-full rounded-2xl border border-[var(--editable-border)] bg-white px-4 text-sm font-bold outline-none">
-              <option value="all">All categories</option>
-              {CATEGORY_OPTIONS.map((item) => <option key={item.slug} value={item.slug}>{item.name}</option>)}
-            </select>
-            <button className="mt-3 h-12 w-full rounded-2xl bg-[var(--archive-text)] text-sm font-black text-[var(--archive-bg)]">Apply</button>
-            <p className="mt-3 text-xs font-bold opacity-55">Showing: {categoryLabel}</p>
-          </form>
+            <form action={basePath} className="rounded-2xl border border-[var(--editable-border)] bg-white/86 p-5 shadow-[0_18px_58px_rgba(30,36,51,0.08)] backdrop-blur">
+              <div className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-[#667085]"><Filter className="h-4 w-4" /> Filter resources</div>
+              <select name="category" defaultValue={category} className="mt-4 h-12 w-full rounded-xl border border-[var(--editable-border)] bg-white px-4 text-sm font-bold text-[#202637] outline-none">
+                <option value="all">All categories</option>
+                {CATEGORY_OPTIONS.map((item) => <option key={item.slug} value={item.slug}>{item.name}</option>)}
+              </select>
+              <button className="mt-3 h-12 w-full rounded-xl bg-[#202637] text-sm font-black text-white">Apply filter</button>
+              <p className="mt-3 text-xs font-bold text-[#667085]">Showing: {categoryLabel}</p>
+            </form>
+          </div>
         </section>
 
         <section className="mx-auto max-w-[var(--editable-container)] px-4 pb-16 sm:px-6 lg:px-8">
@@ -238,15 +241,32 @@ function ImageArchiveCard({ post, href, index }: { post: SitePost; href: string;
 
 function BookmarkArchiveCard({ post, href, index }: { post: SitePost; href: string; index: number }) {
   const website = getField(post, ['website', 'url', 'link'])
+  const image = getImages(post)[0]
+  const category = getCategory(post, 'SBM')
+  const featured = index % 7 === 0
+  const dark = index % 7 === 3
+  const compact = index % 7 === 5
   return (
-    <Link href={href} className="group block rounded-[1.7rem] border border-[var(--editable-border)] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:bg-[var(--archive-text)] hover:text-[var(--archive-bg)]">
-      <div className="flex items-center justify-between gap-3">
-        <span className="rounded-full border border-current/20 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em]">Save {String(index + 1).padStart(2, '0')}</span>
-        <Bookmark className="h-5 w-5" />
+    <Link href={href} className={`group block overflow-hidden rounded-xl border shadow-[0_14px_44px_rgba(30,36,51,0.08)] transition hover:-translate-y-1 hover:shadow-xl ${featured ? 'md:row-span-2' : ''} ${dark ? 'border-[#101820] bg-[#101820] text-white' : 'border-[var(--editable-border)] bg-white text-[#202637]'}`}>
+      {image ? (
+        <div className={`relative overflow-hidden bg-[var(--archive-bg)] ${featured ? 'aspect-[4/5]' : compact ? 'aspect-[21/9]' : 'aspect-[16/10]'}`}>
+          <img src={image} alt="" className={`h-full w-full object-cover transition duration-500 group-hover:scale-105 ${dark ? 'opacity-50' : ''}`} />
+          <div className={`absolute inset-0 ${dark || featured ? 'bg-[linear-gradient(180deg,rgba(0,0,0,0.04),rgba(0,0,0,0.55))]' : 'bg-[linear-gradient(180deg,rgba(0,0,0,0.03),rgba(0,0,0,0.32))]'}`} />
+          <span className="absolute left-4 top-4 rounded-lg bg-white px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[#1e2433]">{category}</span>
+        </div>
+      ) : null}
+      <div className={featured ? 'p-7' : 'p-6'}>
+        <div className="flex items-center justify-between gap-3">
+          <span className={`rounded-lg border border-current/15 px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] ${dark ? 'text-white/70' : 'text-[var(--archive-accent)]'}`}>SBM {String(index + 1).padStart(2, '0')}</span>
+          <Bookmark className={`h-5 w-5 ${dark ? 'text-white/70' : 'text-[var(--archive-accent)]'}`} />
+        </div>
+        <h2 className={`${featured ? 'text-3xl' : 'text-2xl'} mt-5 font-black leading-tight`}>{post.title}</h2>
+        <p className={`mt-4 text-sm leading-6 ${featured ? 'line-clamp-6' : 'line-clamp-4'} ${dark ? 'text-white/68' : 'opacity-70'}`}>{getSummary(post)}</p>
+        <div className="mt-5 flex items-center justify-between gap-3 border-t border-[var(--editable-border)] pt-4">
+          {website ? <p className="min-w-0 truncate text-xs font-black uppercase tracking-[0.12em] opacity-60">{website.replace(/^https?:\/\//, '')}</p> : <p className="text-xs font-black uppercase tracking-[0.12em] opacity-60">Saved resource</p>}
+          <span className={`shrink-0 text-xs font-black uppercase tracking-[0.12em] ${dark ? 'text-white' : 'text-[var(--archive-accent)]'}`}>Open</span>
+        </div>
       </div>
-      <h2 className="mt-8 text-2xl font-black leading-tight tracking-[-0.05em]">{post.title}</h2>
-      <p className="mt-4 line-clamp-4 text-sm leading-6 opacity-70">{getSummary(post)}</p>
-      {website ? <p className="mt-5 truncate text-xs font-black uppercase tracking-[0.16em] opacity-60">{website.replace(/^https?:\/\//, '')}</p> : null}
     </Link>
   )
 }
